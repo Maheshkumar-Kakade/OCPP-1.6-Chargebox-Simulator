@@ -172,6 +172,18 @@
                     id = (JSON.parse(msg.data))[1];
 
                     switch (ddata[2]) {
+                        case "GetConfiguration":
+                            var configuration = JSON.stringify([3, id, {"configurationKey": [{"key":"AuthorizationCacheEnabled", "readonly":false, value:"true" }]}]);
+                            _websocket.send(configuration);
+                            break;
+                        case "ClearCache":
+                            var clearCacheRs = JSON.stringify([3, id, {"status": "Accepted"}]);
+                            _websocket.send(clearCacheRs);
+                            break;
+                        case "ChangeConfiguration":
+                            var changeConfigurationRs = JSON.stringify([3, id, {"status": "Accepted"}]);
+                            _websocket.send(changeConfigurationRs);
+                            break;
                         case "Reset":
                             //Reset type SOFT, HARD
                             var ResetS = JSON.stringify([3, id, {"status": "Accepted"}]);
@@ -210,6 +222,10 @@
                             //connectorId
                             var CA = JSON.stringify([3, id, {"status": "Accepted"}]);
                             _websocket.send(CA);
+                            break;
+                        case "DataTransfer":
+                            var dataTransfer = JSON.stringify([3, id, {"status": "Accepted"}]);
+                            _websocket.send(dataTransfer);
                             break;
                         default:
                             var error = JSON.stringify([4, id]);
@@ -383,8 +399,8 @@
         $('#data_transfer').click(function () {
             sessionStorage.setItem('LastAction', "DataTransfer");
             var DT = JSON.stringify([2, id, "DataTransfer", {
-                "vendorId": "rus.avt.cp",
-                "messageId": "GetChargeInstruction",
+                "vendorId": "EVer",
+                "messageId": "instructions",
                 "data": ""
             }]);
             _websocket.send(DT);
